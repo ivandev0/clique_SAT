@@ -34,6 +34,7 @@ while True:
                                 -var_pool.id('P_{}_{}k{}'.format(y + 1, z + 1, c + 1)),
                                 -var_pool.id('P_{}_{}k{}'.format(x + 1, z + 1, c + 1))])
 
+    cnf.to_file("data/cnf_n{}_k{}".format(n, k))
     g = Glucose4()
     g.append_formula(cnf.clauses)
     print('analyzing clique with ' + str(n) + ' vertices')
