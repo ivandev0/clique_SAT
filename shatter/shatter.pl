@@ -34,9 +34,9 @@
 # Define Executables
 #
 
-$cnf2gap = "./cnf2gap";
-$gat = "./saucy"; # Graph Automorphism Tool
-$gap2cnf = "./gap2cnf";
+$cnf2gap = "./shatter/cnf2gap";
+$gat = "./shatter/saucy"; # Graph Automorphism Tool
+$gap2cnf = "./shatter/gap2cnf";
 
 
 #
