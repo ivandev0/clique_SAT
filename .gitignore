@@ -1,3 +1,5 @@
 env/
 venv/
 .idea/
+*.result
+shatter/data
