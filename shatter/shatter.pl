@@ -58,7 +58,7 @@ close(CNF);
 # 1) Run cnf2gap, create file.g (recipe file for saucy)
 #
 
-print "Converting CNF instance to saucy's input format ...\n";
+#print "Converting CNF instance to saucy's input format ...\n";
 open(OUTG, "> $file.g") || die ("Cant open $file.g");
 close(OUTG);
 
@@ -70,7 +70,7 @@ system("$cmd");
 # 2) Run saucy
 #
 
-print "Calling saucy ...\n";
+#print "Calling saucy ...\n";
 
 $cmd = "$gat -i gap -o gap -x 1 -s saucy.result -c $file.g > $file.txt";
 #print "$cmd\n";
@@ -81,7 +81,7 @@ system("$cmd");
 # 4) Now Generate final CNF Files.
 #
 
-print "Adding Symmetry-breaking clauses to CNF instance ...\n";
+#print "Adding Symmetry-breaking clauses to CNF instance ...\n";
 
 $cmd = "$gap2cnf -f $file -t $file.txt\n";
 #print "$cmd\n";
