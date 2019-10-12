@@ -1,8 +1,12 @@
 from pysat.formula import IDPool, CNF
 from pysat.solvers import Glucose4
+import subprocess
 
 import sys
 
+file_name = "shatter/data/cnf_formula"
+sym_extension = ".Sym.cnf"
+shatter_path = "./shatter/shatter.pl"
 k = int(sys.argv[1])
 n = 3
 
@@ -17,23 +21,19 @@ while True:
 
     for x in range(n):
         for y in range(x):
-            cnf.append([var_pool.id('P_{}_{}k{}'.format(x + 1, y + 1, c + 1)) for c in range(k)])
-
-    for x in range(n):
-        for y in range(x):
-            for c in range(k):
-                edge = -var_pool.id('P_{}_{}k{}'.format(x + 1, y + 1, c + 1))
-                for c2 in range(c):
-                    cnf.append([edge, -var_pool.id('P_{}_{}k{}'.format(x + 1, y + 1, c2 + 1))])
+            cnf.append([var_pool.id('P_{}_{}k{}'.format(x, y, c)) for c in range(k)])
 
     for x in range(n):
         for y in range(x):
             for z in range(y):
                 for c in range(k):
-                    cnf.append([-var_pool.id('P_{}_{}k{}'.format(x + 1, y + 1, c + 1)),
-                                -var_pool.id('P_{}_{}k{}'.format(y + 1, z + 1, c + 1)),
-                                -var_pool.id('P_{}_{}k{}'.format(x + 1, z + 1, c + 1))])
+                    cnf.append([-var_pool.id('P_{}_{}k{}'.format(x, y, c)),
+                                -var_pool.id('P_{}_{}k{}'.format(y, z, c)),
+                                -var_pool.id('P_{}_{}k{}'.format(x, z, c))])
 
+    cnf.to_file(file_name)
+    subprocess.check_call([shatter_path, file_name])
+    cnf.from_file(file_name + sym_extension)
     g = Glucose4()
     g.append_formula(cnf.clauses)
     print('analyzing clique with ' + str(n) + ' vertices')
@@ -41,7 +41,7 @@ while True:
     # print('clauses = ' + str(g.nof_clauses()))
 
     if not g.solve():
-        print('the answer is : n = ' + str(n - 1))
+        print('for k = ' + str(k) + ' the answer is : n = ' + str(n - 1))
         break
     else:
         n = n + 1
